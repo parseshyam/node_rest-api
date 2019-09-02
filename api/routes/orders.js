@@ -5,7 +5,7 @@ const Product = require('../models/product');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const checkAuth = require('../middleware/checkAuth'); // USE IT TOMORROW MIND PISSED RIGHT NOW.
+const checkAuth = require('../middleware/checkAuth');
 
 router.get('/',checkAuth,(req,res,next)=>{
     // res.status(200).json({
@@ -18,7 +18,7 @@ router.get('/',checkAuth,(req,res,next)=>{
     .then(result => {
         const response = {
             Count : result.length,
-            Orders : result.map(result => { //REMEMBER THIS MAPPING UNLESS RESULT.(DOT) WON'T WORK.   ---> HIGH
+            Orders : result.map(result => { 
               return {
                 Orderd_quantity : result.quantity,
                 Order_id :result._id,
@@ -69,7 +69,6 @@ router.post('/',checkAuth,(req,res,next)=>{
     // });
 
 
-// --> HERE CHECK FIRST THAT THE PRODUCT ID EXISTS IN DATABASE OR NOT ? THAT'S WHY WE'VE IMPORTED 'Product' , SO HERES THE LOGIC.
     Product.findById(req.body.product)
     .then( product => {
         const order = new Order({
@@ -77,7 +76,7 @@ router.post('/',checkAuth,(req,res,next)=>{
             product : req.body.product,
             quantity : req.body.quantity               
         });
-         order.save()               // REMEMBER THIS STATEMENT RETURNING PROMISE SO THAT NEXT THEN CAN USE IT.   ---> HIGH
+         order.save()           
         .then(result => {
             console.log(result);
             res.status(201).json({
@@ -118,7 +117,7 @@ router.delete('/:orderId',checkAuth,(req,res,next)=>{
     .exec()
     .then(result => {
         console.log(result);
-     // res.status(200).json(result); You can do this but below used is best response user_friendly
+     // res.status(200).json(result); 
         res.status(200).json({
             Message : 'ORDER DELLETED !',
             CREATE_NEW : {
